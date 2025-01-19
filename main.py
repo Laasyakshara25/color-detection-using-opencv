@@ -12,6 +12,9 @@ while True:
     ret, frame = cap.read()
     hsvImage = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
+    purple_hsv = cv.cvtColor(np.uint8([[purple]]), cv.COLOR_BGR2HSV)[0][0]
+    lowerLimit, upperLimit = get_limits(color=purple_hsv)
+
     lowerLimit, upperLimit = get_limits(color=purple)
     mask = cv.inRange(hsvImage, lowerLimit, upperLimit)
 
@@ -22,8 +25,8 @@ while True:
 
     if bbox is not None:
         x1, y1, x2, y2 = bbox
-
-        frame = cv.rectangle(frame, (x1,y1), (x2,y2), (0,255,0), 5)
+        frame = cv.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 5)
+        cv.putText(frame, "Purple Object", (x1, y1 - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
     cv.imshow('Frame', frame)
 
